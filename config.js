@@ -1,4 +1,4 @@
 window.LEDGER_CONFIG = {
-  url: "PASTE-YOUR-PROJECT-URL-HERE",
-  key: "PASTE-YOUR-PUBLISHABLE-KEY-HERE"
+  url: "https://atmhipcjluagptifjqll.supabase.co",
+  key: "sb_publishable_ZnFpSpdZUF1GpJNpgKdGEA_bWQj0khU"
 };
