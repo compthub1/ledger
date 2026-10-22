@@ -140,7 +140,7 @@ td.r,th.r{text-align:right;font-family:var(--font-num);font-variant-numeric:tabu
 </style>
 </head><body>
 <div id="login" hidden><h1>Batch Ledger</h1><small style="color:var(--muted)">Sign in with the email and password you were given.</small>
-<form id="lform"><input name="email" type="email" autocomplete="username" placeholder="Email" required><input name="password" type="password" autocomplete="current-password" placeholder="Password" required><button type="submit">Sign in</button></form><div id="lmsg"></div></div>
+<form id="lform"><input name="email" type="email" autocomplete="username" placeholder="Email" required><input name="password" type="password" autocomplete="current-password" placeholder="Password" required><button type="submit">Sign in</button></form><div id="lmsg"></div><div style="margin-top:18px;display:flex;gap:14px;font-size:14px"><a href="#" data-lg="fr">Français</a><a href="#" data-lg="en">English</a></div></div>
 <div id="app"><div class="empty" style="margin-top:40px">Loading…</div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -149,6 +149,79 @@ td.r,th.r{text-align:right;font-family:var(--font-num);font-variant-numeric:tabu
 (function(){
 'use strict';
 const $app=document.getElementById('app');
+/* ---------- language (French / English) ---------- */
+let LANG='fr';try{LANG=localStorage.getItem('lang')||'fr'}catch(_){}
+const FR={
+'Access to this page was changed.':"L'accès à cette page a été modifié.",'Account':'Compte','Add':'Ajouter','Add a markup of (%)':'Ajouter une marge de (%)','Add a product not ordered…':'Ajouter un produit non commandé…','Add client':'Ajouter un client','Add product':'Ajouter un produit','Add the people you resell to.':'Ajoutez les personnes à qui vous revendez.','Add these lines':'Ajouter ces lignes','After':'Après','All clients in this batch':'Tous les clients de ce lot','All data deleted':'Toutes les données ont été supprimées','Amount received':'Montant reçu','Amount sent':'Montant envoyé','As written on the supplier invoice. Typing it in an order finds this product too.':"Tel qu'écrit sur la facture du fournisseur. Le saisir dans une commande retrouve aussi ce produit.",'Available when all 8 checks are green.':'Disponible quand les 8 contrôles sont verts.','Backup':'Sauvegarde','Backup downloaded':'Sauvegarde téléchargée','Balance':'Solde','Batch Ledger':'Registre des lots','Batch name':'Nom du lot','Batch settled and locked':'Lot clôturé et verrouillé','Before':'Avant','Batches':'Lots','Cancel':'Annuler','Cash':'Espèces','Cash in hand (collected − sent)':'Espèces en main (encaissé − envoyé)','Catalog':'Catalogue','Check needed':'À vérifier','Checks':'Contrôles','Client name':'Nom du client','Client orders entered with prices':'Commandes des clients saisies avec prix','Client price':'Prix client','Clients':'Clients','Clients pay':'Les clients paient','Collected':'Encaissé','Commission must be between 0 and 100.':'La commission doit être entre 0 et 100.','Connecting…':'Connexion…','Copied':'Copié','Copy invoice text':'Copier le texte de la facture','Copy order text':'Copier le texte de la commande','Copy this text':'Copier ce texte','Could not reach the database. Check your connection.':'Base de données inaccessible. Vérifiez votre connexion.','Could not read that file. Use .xlsx, .xls or .csv.':'Fichier illisible. Utilisez .xlsx, .xls ou .csv.','Could not save. Check your connection and try again.':"Enregistrement impossible. Vérifiez votre connexion et réessayez.",'Currency label':'Devise','Data':'Données','Decimals':'Décimales','Default price you charge. You can change it per client order.':'Prix habituel facturé. Modifiable pour chaque commande client.','Delete':'Supprimer','Delete all data':'Supprimer toutes les données','Deposit':'Dépôt','Download a copy of everything now and then. You can restore it here if you ever need to.':'Téléchargez de temps en temps une copie de tout. Vous pouvez la restaurer ici en cas de besoin.','Download backup':'Télécharger la sauvegarde','Edit client':'Modifier le client','Edit product':'Modifier le produit','Enough collected to cover the supplier invoice.':'Assez encaissé pour couvrir la facture du fournisseur.','Enter 0 or a positive rounding step.':"Entrez 0 ou un pas d'arrondi positif.",'Enter a markup of 0 or more.':'Entrez une marge de 0 ou plus.','Enter a product name.':'Entrez un nom de produit.','Enter a quantity above 0.':'Entrez une quantité supérieure à 0.','Enter client orders first.':"Saisissez d'abord les commandes des clients.",'Enter the amount received.':'Entrez le montant reçu.','Enter the amount sent.':'Entrez le montant envoyé.','Enter the supplier invoice to compare totals.':'Saisissez la facture du fournisseur pour comparer les totaux.','Enter the supplier invoice to see the target.':"Saisissez la facture du fournisseur pour voir l'objectif.",'Every client has paid in full':'Chaque client a payé en totalité',"Every quantity matches the clients' orders.":'Toutes les quantités correspondent aux commandes des clients.','Example loaded. Delete it from Settings when you are done.':"Exemple chargé. Supprimez-le dans Réglages quand vous avez fini.",'Fill from orders':'Remplir depuis les commandes','Final once all the checks below are green.':'Définitif quand tous les contrôles ci-dessous sont verts.','Fixed once you add products, so stored prices keep their meaning.':'Fixé dès que vous ajoutez des produits, pour que les prix gardent leur sens.','Go to Catalog':'Aller au catalogue','How':'Comment','Import my client prices':'Importer mes prix clients','Import supplier prices':'Importer les prix fournisseur','Import your supplier prices and your own client prices from Excel in the Catalog. Orders then pick up the prices by product name.':"Importez depuis Excel, dans le Catalogue, vos prix fournisseur et vos prix clients. Les commandes reprennent ensuite les prix par nom de produit.",'Import your two price lists above, or add products one by one.':'Importez vos deux listes de prix ci-dessus, ou ajoutez les produits un par un.','Invoice':'Facture','Invoice qty':'Qté facture','Invoice total matches the printed total':'Le total de la facture correspond au total imprimé','Invoices':'Factures','Load an example':'Charger un exemple','Load an example batch':'Charger un lot exemple','Load your price lists first':"Chargez d'abord vos listes de prix",'Loading your ledger…':'Chargement de votre registre…','Locked until checks 1 to 7 are green, so you cannot pay the supplier before collecting.':"Verrouillé tant que les contrôles 1 à 7 ne sont pas verts : impossible de payer le fournisseur avant d'avoir encaissé.",'Margin':'Marge','Mark batch as settled':'Marquer le lot comme clôturé','Match':'OK','Money collected covers the supplier invoice':'Argent encaissé couvre la facture du fournisseur','My sum of the invoice':'Ma somme de la facture','Name':'Nom','New':'Nouveau','New batch':'Nouveau lot','New client':'Nouveau client','New product':'Nouveau produit','New products get their client price when you import your client prices.':'Les nouveaux produits reçoivent leur prix client quand vous importez vos prix clients.','New products have no supplier price yet. Import the supplier prices to fill it.':"Les nouveaux produits n'ont pas encore de prix fournisseur. Importez les prix fournisseur pour le remplir.",'No batches yet':'Aucun lot','No client orders yet':'Aucune commande client','No clients yet':'Aucun client','No orders yet':'Aucune commande','No price':'Sans prix','No product matches.':'Aucun produit trouvé.','No products yet':'Aucun produit','Not on invoice':'Pas sur la facture','Not synced':'Non synchronisé','Note (optional)':'Note (facultatif)','Nothing sent yet.':'Rien envoyé pour le moment.','Nothing to change. These prices are already in your catalog.':'Rien à changer. Ces prix sont déjà dans votre catalogue.','Nothing to collect yet':"Rien à encaisser pour l'instant","One file with the supplier's prices and one with the prices you give your clients. Each needs two columns: product name and price. A header row is optional. Products are matched by name, so importing again updates prices without duplicates.":"Un fichier avec les prix du fournisseur et un avec les prix que vous donnez à vos clients. Chacun a deux colonnes : nom du produit et prix. La ligne d'en-tête est facultative. Les produits sont reconnus par leur nom : réimporter met à jour les prix sans doublons.",'Order batches':'Lots de commandes','Orders':'Commandes','Other':'Autre','Paid':'Payé','Partial':'Partiel','Paste a whole order':'Coller une commande entière','Hide':'Masquer','Payment recorded':'Paiement enregistré','Phone (optional)':'Téléphone (facultatif)','Price lists from Excel':'Listes de prix depuis Excel','Price markup (clients pay − supplier invoice)':'Marge sur les prix (clients − facture fournisseur)','Product':'Produit','Product name':'Nom du produit','Qty':'Qté','Quantities match supplier invoice':'Les quantités correspondent à la facture du fournisseur','Ready to pay supplier':'Prêt à payer le fournisseur','Record':'Enregistrer','Remove':'Retirer','Rename / delete':'Renommer / supprimer','Rename batch':'Renommer le lot','Reopen batch':'Rouvrir le lot','Restore from backup':'Restaurer une sauvegarde','Round up to a multiple of (0 = no rounding)':"Arrondir au multiple supérieur de (0 = pas d'arrondi)",'Save':'Enregistrer','Select the text and copy it.':'Sélectionnez le texte et copiez-le.','Send to the supplier':'Envoyer au fournisseur','Settings':'Réglages','Settled':'Clôturé','Settle':'Clôture','Sign out':'Se déconnecter','Sign in':'Se connecter','Signed in as':'Connecté en tant que','Start the first batch':'Commencer le premier lot','Storage is full. Delete old batches.':"Stockage plein. Supprimez d'anciens lots.",'Supplier':'Fournisseur','Supplier invoice':'Facture fournisseur','Supplier invoice entered':'Facture du fournisseur saisie','Supplier price':'Prix fournisseur','Tap again to delete':'Touchez encore pour supprimer','Tap again to delete everything':'Touchez encore pour tout supprimer','The Excel reader did not load. Check your connection and reload the page.':"Le lecteur Excel n'a pas chargé. Vérifiez votre connexion et rechargez la page.",'The client price must be a number.':'Le prix client doit être un nombre.','The price comes from your client price list. Adding the same product again increases its quantity.':'Le prix vient de votre liste de prix clients. Ajouter à nouveau le même produit augmente sa quantité.','The supplier price must be a number.':'Le prix fournisseur doit être un nombre.','Then add the products and quantities they ordered.':'Ajoutez ensuite les produits et quantités commandés.','This batch is locked.':'Ce lot est verrouillé.','This batch is settled and locked. Reopen it in the Settle tab to change anything.':"Ce lot est clôturé et verrouillé. Rouvrez-le dans l'onglet Clôture pour modifier.",'This client has orders or payments, so it cannot be deleted.':'Ce client a des commandes ou des paiements : suppression impossible.','This is not a valid backup file.':"Ce n'est pas un fichier de sauvegarde valide.",'This product is used in a batch, so it cannot be deleted.':'Ce produit est utilisé dans un lot : suppression impossible.','Total':'Total','Total gain':'Gain total','Total printed on the supplier invoice':'Total imprimé sur la facture du fournisseur','Total qty':'Qté totale','Totals agree.':'Les totaux concordent.','Transfer recorded':'Virement enregistré','Transfer to supplier':'Virement au fournisseur','Transfer to supplier sent':'Virement au fournisseur envoyé','Type a product name.':'Saisissez un nom de produit.','Type or pick a client first.':"Saisissez ou choisissez d'abord un client.",'Unchanged':'Inchangé','Unit (optional)':'Unité (facultatif)','Unit price':'Prix unitaire','Unpaid':'Impayé','Updated':'Mis à jour','View only':'Lecture seule','What you pay per unit. Cents are kept. Pre-fills the supplier invoice.':"Ce que vous payez par unité. Les décimales sont conservées. Pré-remplit la facture fournisseur.",'You can view this ledger but not change it. Ask the owner for Contributor or Editor access.':"Vous pouvez consulter ce registre mais pas le modifier.",'Your gain on this batch':'Votre gain sur ce lot','custom price':'prix personnalisé','new':'nouveau','no client price':'sans prix client','no supplier price':'sans prix fournisseur','supplier prices':'prix fournisseur','your client prices':'vos prix clients','‹ Batches':'‹ Lots','(deleted client)':'(client supprimé)','(deleted product)':'(produit supprimé)','Mark batch as settled':'Marquer le lot comme clôturé',
+'Type a name. A new name adds the client.':'Saisissez un nom. Un nouveau nom ajoute le client.','Search products':'Rechercher un produit','Product name ':'Nom du produit','Type it to double-check my sum':'Saisissez-le pour vérifier ma somme','box, vial, tube':'boîte, flacon, tube','Email':'E-mail','Password':'Mot de passe','Synced':'Synchronisé','Saving…':'Enregistrement…','Your commission on the supplier invoice (%)':'Votre commission sur la facture du fournisseur (%)','from supplier':'du fournisseur','from supplier →':'du fournisseur →','to client':'au client','to client ·':'au client ·','Language':'Langue','Wrong email or password.':'E-mail ou mot de passe incorrect.','Signing in…':'Connexion…','Loading…':'Chargement…','Sign in with the email and password you were given.':"Connectez-vous avec l'e-mail et le mot de passe qui vous ont été donnés.",
+'. Your partner uses their own login on their own phone. Everything you both type is saved instantly and shows on both phones.':'. Votre partenaire utilise son propre identifiant sur son téléphone. Tout ce que vous saisissez est enregistré instantanément et visible sur les deux téléphones.',
+'Setup not finished: open config.js in your GitHub repository and paste your Supabase URL and key.':"Configuration incomplète : ouvrez config.js dans votre dépôt GitHub et collez l'URL et la clé Supabase.",
+'Enter the products and prices from the supplier\'s invoice':'Saisissez les produits et prix de la facture du fournisseur','Type the total printed on the supplier invoice':'Saisissez le total imprimé sur la facture du fournisseur','Available once the checks above pass':'Disponible quand les contrôles ci-dessus sont validés',
+'1 · Order to send the supplier':'1 · Commande à envoyer au fournisseur','2 · Supplier invoice':'2 · Facture du fournisseur','Collect':'Encaisser','Clients pay':'Les clients paient','Commission':'Commission',
+' invoices cover the supplier invoice':' : les factures couvrent la facture du fournisseur',"Clients' invoices cover the supplier invoice":'Les factures des clients couvrent la facture du fournisseur','Clients\' invoices cover the supplier invoice':'Les factures des clients couvrent la facture du fournisseur','Take orders first. The combined order for the supplier is built from them.':"Prenez d'abord les commandes. La commande groupée pour le fournisseur en découle."
+};
+const RX=[
+[/^Set (\d+) missing client prices? from the supplier price$/,(m)=>`Fixer ${m[1]} prix client manquant${m[1]==1?'':'s'} depuis le prix fournisseur`],
+[/^Set (\d+) missing client prices?$/,m=>`Fixer ${m[1]} prix client manquant${m[1]==1?'':'s'}`],
+[/^Set (\d+) client prices?$/,m=>`Fixer ${m[1]} prix client`],
+[/^(\d+) products? · (\d+) with a supplier price · (\d+) with a client price$/,m=>`${m[1]} produit${m[1]==1?'':'s'} · ${m[2]} avec prix fournisseur · ${m[3]} avec prix client`],
+[/^(\d+)% commission$/,m=>`${m[1]} % de commission`],
+[/^Your (\S+)% commission$/,m=>`Votre commission de ${m[1]} %`],
+[/^(\d+) clients?$/,m=>`${m[1]} client${m[1]==1?'':'s'}`],
+[/^(.*) · (\d+) clients?$/,m=>`${m[1]} · ${m[2]} client${m[2]==1?'':'s'}`],
+[/^(\d+)\/8 checks$/,m=>`${m[1]}/8 contrôles`],
+[/^Imported (\d+) products?$/,m=>`${m[1]} produit${m[1]==1?'':'s'} importé${m[1]==1?'':'s'}`],
+[/^(.*) still needed to cover the supplier invoice\.$/,m=>`${m[1]} encore nécessaires pour couvrir la facture du fournisseur.`],
+[/^(.*) · (Cash|Deposit|Other)$/,m=>`${m[1]} · ${FR[m[2]]}`],
+[/^Import (.*)$/,m=>`Importer ${T(m[1])}`],
+[/^(\d+) repeated product names? in the file\. The last price is used\.$/,m=>`${m[1]} nom${m[1]==1?'':'s'} de produit répété${m[1]==1?'':'s'} dans le fichier. Le dernier prix est utilisé.`],
+[/^Client "(.*)" added$/,m=>`Client « ${m[1]} » ajouté`],
+[/^Selected (.*)$/,m=>`${m[1]} sélectionné`],
+[/^Ordered (\S+)(.*)$/,m=>`Commandé ${m[1]}${m[2]}`],
+[/^Overpaid (.*)$/,m=>`Trop-perçu ${m[1]}`],
+[/^Owes (.*)$/,m=>`Doit ${m[1]}`],
+[/^Order for (.*)$/,m=>`Commande de ${m[1]}`],
+[/^No products for (.*) yet\. Type a product name above\.$/,m=>`Aucun produit pour ${m[1]}. Saisissez un nom de produit ci-dessus.`],
+[/^Supplier: (.*)$/,m=>`Fournisseur : ${m[1]}`],
+[/^and (\d+) more$/,m=>`et ${m[1]} de plus`],
+[/^(.*) vs ordered$/,m=>`${m[1]} vs commandé`],
+[/^(\d+) added\.(.*)$/,m=>`${m[1]} ajouté${m[1]==1?'':'s'}.${m[2].replace(/ (\d+) not recognised, left in the box so you can fix them\./,(x,n)=>` ${n} non reconnu${n==1?'':'s'}, laissé${n==1?'':'s'} dans la zone pour correction.`)}`],
+[/^(\d+) records restored$/,m=>`${m[1]} enregistrements restaurés`],
+[/^(\d+) products? where the invoice does not match what clients ordered\.$/,m=>`${m[1]} produit${m[1]==1?'':'s'} dont la facture ne correspond pas aux commandes des clients.`],
+[/^Totals differ by (.*)\. Recheck a quantity or a price\.$/,m=>`Les totaux diffèrent de ${m[1]}. Revérifiez une quantité ou un prix.`],
+[/^No price for: (.*)$/,m=>`Pas de prix pour : ${m[1]}`],
+[/^(\d+) client\(s\), (.*)$/,m=>`${m[1]} client(s), ${m[2]}`],
+[/^My sum (.*), printed (.*) \(difference (.*)\)$/,m=>`Ma somme ${m[1]}, imprimé ${m[2]} (différence ${m[3]})`],
+[/^Margin (.*)$/,m=>`Marge ${m[1]}`],
+[/^Clients are charged (.*) less than the supplier invoice$/,m=>`Les clients sont facturés ${m[1]} de moins que la facture du fournisseur`],
+[/^(.*) owes (.*)$/,m=>`${m[1]} doit ${m[2]}`],
+[/^Collected (.*)$/,m=>`Encaissé ${m[1]}`],
+[/^Short by (.*)$/,m=>`Il manque ${m[1]}`],
+[/^Sent (.*) more than due$/,m=>`${m[1]} envoyé en trop`],
+[/^Send (.*)$/,m=>`Envoyer ${m[1]}`],
+[/^(.*): clients ordered (\S+), invoice (\S+)(.*)$/,m=>`${m[1]} : commandé ${m[2]}, facture ${m[3]}${m[4]}`],
+[/^Clients pay (.*) · margin$/,m=>`Les clients paient ${m[1]} · marge`],
+[/^Clients pay (.*), supplier invoice is (.*)\. Margin (.*)\.$/,m=>`Les clients paient ${m[1]}, facture fournisseur ${m[2]}. Marge ${m[3]}.`],
+[/^(.*) \(FCFA, no decimals\)$/,m=>`${m[1]} (FCFA, sans décimales)`],
+[/^0 keeps the exact price, cents included\.$/,()=>"0 garde le prix exact, décimales comprises."],
+[/^0 means the same price as the supplier\.$/,()=>'0 = même prix que le fournisseur.'],
+[/^(\d+) in the file\. The last price is used\.$/,m=>m[0]],
+];
+function T(s){
+  if(LANG!=='fr'||typeof s!=='string')return s;
+  const lead=s.match(/^\s*/)[0],trail=s.match(/\s*$/)[0],c=s.trim();if(!c)return s;
+  if(FR[c]!==undefined)return lead+FR[c]+trail;
+  for(const [r,f] of RX){const m=c.match(r);if(m)return lead+f(m)+trail}
+  return s;
+}
+function trDom(root){
+  if(LANG!=='fr')return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);const ns=[];while(w.nextNode())ns.push(w.currentNode);
+  ns.forEach(n=>{const p=n.parentNode&&n.parentNode.nodeName;if(p==='SCRIPT'||p==='STYLE')return;const v=T(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v});
+  root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(e=>{['placeholder','title','aria-label'].forEach(a=>{if(e.hasAttribute(a)){const v=T(e.getAttribute(a));if(v!==e.getAttribute(a))e.setAttribute(a,v)}})});
+}
+function setLang(l){LANG=l;try{localStorage.setItem('lang',l)}catch(_){}document.documentElement.lang=l;render()}
+
 const COLS=['products','clients','batches','lines','slines','pays'];
 const S={db:null,loaded:{},pend:{},canWrite:true,tab:'batches',batchId:null,step:'orders',clientSel:null,search:'',
   settings:{currency:'FCFA',decimals:2,commission:5},products:[],clients:[],batches:[],lines:[],slines:[],pays:[],
@@ -178,7 +251,7 @@ const sgnS=v=>(v>0?'+':'')+fmtS(v);
 const plainS=plain;
 const toMinorS=s=>{if(s==null||String(s).trim()==='')return null;const n=Number(String(s).replace(/\s/g,'').replace(',','.'));return isFinite(n)&&n>=0?Math.round(n*f10()*X):null};
 const sortBy=(a,f)=>[...a].sort((x,y)=>String(f(x)).localeCompare(String(f(y)),undefined,{sensitivity:'base'}));
-const dateS=t=>t?new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'';
+const dateS=t=>t?new Date(t).toLocaleDateString(LANG==='fr'?'fr-FR':'en-GB',{day:'numeric',month:'short'}):'';
 const locked=b=>!S.canWrite||!!(b&&b.closed);
 const dis=b=>locked(b)?' disabled':'';
 const pname=id=>P[id]?P[id].name:'(deleted product)';
@@ -454,9 +527,9 @@ function vSupplier(b,c){
 }
 
 function invoiceText(b,c,cid){
-  const cc=c.perClient[cid];let t=`Invoice - ${cname(cid)}\n${b.name}\n\n`;
+  const cc=c.perClient[cid];let t=`${LANG==='fr'?'Facture':'Invoice'} - ${cname(cid)}\n${b.name}\n\n`;
   for(const l of sortBy(cc.lines,x=>pname(x.productId)))t+=`${pname(l.productId)}  ${qf(l.qty)} x ${fmt(l.price)} = ${fmt(lineTotal(l))}\n`;
-  return t+`\nTotal: ${fmt(cc.total)} ${cur()}`;
+  return t+`\nTotal${LANG==="fr"?" :":":"} ${fmt(cc.total)} ${cur()}`;
 }
 function vInvoices(b,c){
   const ids=Object.keys(c.perClient).filter(k=>c.perClient[k].lines.length);
@@ -541,6 +614,7 @@ function vSettings(){
   <label class="fl"><span>Currency label</span><input data-k="set" data-s="currency" data-fid="s:cur" value="${esc(S.settings.currency)}"${dis()}></label>
   <label class="fl"><span>Decimals</span><select data-k="set" data-s="decimals" data-fid="s:dec"${used||!S.canWrite?' disabled':''}>${[0,2,3].map(n=>`<option value="${n}"${n===S.settings.decimals?' selected':''}>${n}${n===0?' (FCFA, no decimals)':''}</option>`).join('')}</select><small class="hint">Fixed once you add products, so stored prices keep their meaning.</small></label>
   <label class="fl"><span>Your commission on the supplier invoice (%)</span><input data-k="set" data-s="commission" data-fid="s:com" inputmode="decimal" value="${S.settings.commission}"${dis()}></label></div>
+  <h2>Language / Langue</h2><div class="card"><div style="display:flex;gap:8px"><button class="btn ${LANG==='fr'?'pri':''}" data-a="lang" data-id="fr">Français</button><button class="btn ${LANG==='en'?'pri':''}" data-a="lang" data-id="en">English</button></div></div>
   <h2>Account</h2><div class="card" style="display:grid;gap:10px"><small>Signed in as <b>${esc(S.email||'')}</b>. Your partner uses their own login on their own phone. Everything you both type is saved instantly and shows on both phones.</small><div><button class="btn" data-a="signout">Sign out</button></div></div>
   <h2>Backup</h2><div class="card" style="display:grid;gap:10px"><small>Download a copy of everything now and then. You can restore it here if you ever need to.</small><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-a="export">Download backup</button> <button class="btn" data-a="restore"${dis()}>Restore from backup</button></div></div>
   <h2>Data</h2><div class="card"><button class="btn" data-a="example"${dis()}>Load an example batch</button> <button class="btn bad" data-a="wipe"${dis()}>${S.confirm==='wipe'?'Tap again to delete everything':'Delete all data'}</button></div>`;
@@ -582,7 +656,7 @@ function clientForm(p){
   render();
 }
 function batchForm(b){
-  S.form={title:b?'Rename batch':'New batch',fields:[{k:'name',label:'Batch name',value:b?b.name:'Order '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'})}],
+  S.form={title:b?'Rename batch':'New batch',fields:[{k:'name',label:'Batch name',value:b?b.name:(LANG==='fr'?'Commande ':'Order ')+new Date().toLocaleDateString(LANG==='fr'?'fr-FR':'en-GB',{day:'numeric',month:'short'})}],
     save:v=>{const name=v.name.trim();if(!name)return 'Enter a name.';
       if(b){upd('batches',b.id,{name})}else{const id=newId('batches');put('batches',id,{name,createdAt:Date.now(),closed:false,printed:null});S.batchId=id;S.step='orders'}return null},
     del:b?()=>{const id=b.id;S.lines.filter(l=>l.batchId===id).forEach(l=>del('lines',l.id));S.slines.filter(l=>l.batchId===id).forEach(l=>del('slines',l.id));S.pays.filter(l=>l.batchId===id).forEach(l=>del('pays',l.id));del('batches',id);S.batchId=null;return null}:null};
@@ -592,6 +666,7 @@ function batchForm(b){
 /* ---------- actions ---------- */
 const top=()=>window.scrollTo(0,0);
 const ACT={
+  lang(t){setLang(t.dataset.id)},
   async signout(){await SB.auth.signOut()},
   export(){const o={app:'batch-ledger',version:1,data:S.db.exportAll()};const u=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download='ledger-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);say('Backup downloaded')},
   restore(){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j||j.app!=='batch-ledger'||!j.data)throw 0;const n=await S.db.importAll(j.data);say(n+' records restored')}catch(e){say('This is not a valid backup file.',true)}};i.click()},
@@ -653,7 +728,7 @@ const ACT={
   fill(){const b=B[S.batchId],c=calc(b.id);let n=0;
     for(const r of c.rows)if(!r.line&&r.ordered>0){n++;const s=sp(P[r.pid])||0;put('slines',`${b.id}__${r.pid}`,{batchId:b.id,productId:r.pid,qty:r.ordered,price:Math.round(s/X),price100:s})}
     say(n?`Filled ${n} line${n===1?'':'s'}. Now correct them to match the invoice.`:'Nothing to fill.')},
-  copyOrder(){const b=B[S.batchId],c=calc(b.id);copyText(`Order - ${b.name}\n\n`+c.rows.filter(r=>r.ordered>0).map(r=>`${pname(r.pid)}  x ${qf(r.ordered)}`).join('\n'))},
+  copyOrder(){const b=B[S.batchId],c=calc(b.id);copyText(`${LANG==='fr'?'Commande':'Order'} - ${b.name}\n\n`+c.rows.filter(r=>r.ordered>0).map(r=>`${pname(r.pid)}  x ${qf(r.ordered)}`).join('\n'))},
   copyInv(t){const b=B[S.batchId];copyText(invoiceText(b,calc(b.id),t.dataset.id))},
   addPay(t){const b=B[S.batchId],k=t.dataset.id,card=t.closest('[data-cid]');
     const amt=toMinor(card.querySelector('[data-k=pamt]').value);if(!amt){say('Enter the amount received.',true);return}
@@ -731,7 +806,7 @@ function render(){
   if(a&&a.dataset&&a.dataset.fid&&$app.contains(a))keep={fid:a.dataset.fid,v:a.value,s:a.selectionStart,e:a.selectionEnd};
   const y=window.scrollY;
   reindex();
-  $app.innerHTML=view();
+  $app.innerHTML=view();trDom($app);
   if(keep){const el=$app.querySelector(`[data-fid="${CSS.escape(keep.fid)}"]`);
     if(el){if(el.value!==keep.v&&!el.readOnly)el.value=keep.v;el.focus({preventScroll:true});try{if(keep.s!=null)el.setSelectionRange(keep.s,keep.e)}catch(_){}}}
   window.scrollTo(0,y);
@@ -792,6 +867,9 @@ function makeDb(sb){
 
 /* ---------- boot: config, login, sync ---------- */
 let SB=null;
+document.querySelectorAll('[data-lg]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();try{localStorage.setItem('lang',a.dataset.lg)}catch(_){}location.reload()}));
+new MutationObserver(()=>trDom(document.getElementById('login'))).observe(document.getElementById('login'),{childList:true,subtree:true,characterData:true});
+trDom(document.getElementById('login'));
 const $login=document.getElementById('login');
 function showLogin(msg){$app.hidden=true;$login.hidden=false;document.getElementById('lmsg').textContent=msg||''}
 async function enter(session){
